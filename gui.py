@@ -4,7 +4,8 @@ import customtkinter as ctk
 
 
 class App:
-    file_types = ['Bitwarden (csv)', 'Chrome (csv)']
+
+    file_types = ['Bitwarden', 'Chrome']
 
     def __init__(self):
         ctk.set_appearance_mode("dark")
@@ -29,7 +30,7 @@ class App:
         first_label = ctk.CTkLabel(self.root, text='1. Select the format of the import file')
         first_label.pack(padx=10, pady=10)
         self.file_type = tk.StringVar(self.root)
-        self.file_type.set('File type')
+        self.file_type.set('Select')
         self.file_selector = ctk.CTkOptionMenu(self.root, variable=self.file_type, values=self.file_types,
                                                command=self.get_type)
         self.file_selector.pack(padx=10, pady=10)
@@ -54,9 +55,13 @@ class App:
 
     def handle_file(self=None):
         filename = filedialog.askopenfilename()
-        self.file_label.configure(text=filename)
-        self.export_button.configure(state='normal')
-        print('Selected:', filename)
+        if filename:
+            self.file_label.configure(text=filename)
+            self.export_button.configure(state='normal')
+            print('Selected:', filename)
+        else:
+            self.file_label.configure(text='No file chosen')
+            self.export_button.configure(state='disabled')
 
     def print_file_type(self):
         file = self.file_type.get()
