@@ -1,23 +1,71 @@
 import tkinter as tk
+from tkinter import filedialog
+import customtkinter as ctk
 
-root = tk.Tk()
-root.title('Password manager')
 
-root_width = 300
-root_height = 200
+class App:
+    file_types = ['Bitwarden (csv)', 'Chrome (csv)']
 
-# get the screen dimension
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
+    def __init__(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
 
-# find the center point
-center_x = int(screen_width/2 - root_width / 2)
-center_y = int(screen_height/2 - root_height / 2)
+        self.root = ctk.CTk()
+        self.root.title('Password manager')
 
-# set the position of the root to the center of the screen
-root.geometry(f'{root_width}x{root_height}+{center_x}+{center_y}')
+        # Set geometry
+        root_width = 600
+        root_height = 600
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        center_x = int(screen_width / 2 - root_width / 2)
+        center_y = int(screen_height / 2 - root_height / 2)
+        self.root.geometry(f'{root_width}x{root_height}+{center_x}+{center_y}')
 
-message = tk.Label(root, text='Export to Bitwarden')
-message.pack()
+        title = ctk.CTkLabel(self.root, text='Clean your export')
+        title.pack(padx=10, pady=10)
 
-root.mainloop()
+        # Set file type
+        first_label = ctk.CTkLabel(self.root, text='1. Select the format of the import file')
+        first_label.pack(padx=10, pady=10)
+        self.file_type = tk.StringVar(self.root)
+        self.file_type.set('File type')
+        self.file_selector = ctk.CTkOptionMenu(self.root, variable=self.file_type, values=self.file_types,
+                                               command=self.get_type)
+        self.file_selector.pack(padx=10, pady=10)
+
+        # Upload file
+        second_label = ctk.CTkLabel(self.root, text='2. Select the import file')
+        second_label.pack(padx=10, pady=10)
+        self.file_button = ctk.CTkButton(self.root, text='Choose File', state='disabled', fg_color='transparent',
+                                         border_width=2, command=self.handle_file)
+        self.file_button.pack(padx=10, pady=10)
+        self.file_label = ctk.CTkLabel(self.root, text='No file chosen')
+        self.file_label.pack(padx=10, pady=10)
+
+        # Export file
+        self.export_button = ctk.CTkButton(self.root, text='Export', state='disabled', command=self.print_file_type)
+        self.export_button.pack(padx=10, pady=10)
+
+        self.root.mainloop()
+
+    def get_type(self, file):
+        self.file_button.configure(state='normal')
+
+    def handle_file(self=None):
+        filename = filedialog.askopenfilename()
+        self.file_label.configure(text=filename)
+        self.export_button.configure(state='normal')
+        print('Selected:', filename)
+
+    def print_file_type(self):
+        file = self.file_type.get()
+        print(file)
+
+
+def main():
+    App()
+
+
+if __name__ == "__main__":
+    main()
