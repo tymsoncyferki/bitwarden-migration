@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import filedialog
 import customtkinter as ctk
+from aggregate import Data
 
 
 class App:
 
     file_types = ['Bitwarden', 'Chrome']
+    type = None
+    data = None
 
     def __init__(self):
         ctk.set_appearance_mode("dark")
@@ -50,17 +53,24 @@ class App:
 
         self.root.mainloop()
 
-    def get_type(self, file):
+    def get_type(self, file_type):
         self.file_button.configure(state='normal')
+        self.type = file_type
 
     def handle_file(self=None):
         filename = filedialog.askopenfilename()
         if filename:
-            self.file_label.configure(text=filename)
-            self.export_button.configure(state='normal')
+            self.data = Data(filename, self.type)
+            try:
+                self.data.verify()
+                self.file_label.configure(text=filename, text_color='white')
+                self.export_button.configure(state='normal')
+            except AssertionError:
+                self.file_label.configure(text='File does not match selected file type!', text_color='red')
+                self.export_button.configure(state='disabled')
             print('Selected:', filename)
         else:
-            self.file_label.configure(text='No file chosen')
+            self.file_label.configure(text='No file chosen', text_color='white')
             self.export_button.configure(state='disabled')
 
     def print_file_type(self):
