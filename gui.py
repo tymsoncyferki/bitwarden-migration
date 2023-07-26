@@ -5,7 +5,6 @@ from aggregate import Data
 
 
 class App:
-
     file_types = ['Bitwarden', 'Chrome']
     type = None
     data = None
@@ -48,8 +47,13 @@ class App:
         self.file_label.pack(padx=10, pady=10)
 
         # Export file
-        self.export_button = ctk.CTkButton(self.root, text='Export', state='disabled', command=self.print_file_type)
+        self.export_button = ctk.CTkButton(self.root, text='Process File', state='disabled', command=self.process_file)
         self.export_button.pack(padx=10, pady=10)
+
+        # Save file
+        self.save_button = ctk.CTkButton(self.root, text='Save', state='disabled', fg_color='transparent',
+                                         border_width=2, command=self.save_file)
+        self.save_button.pack(padx=10, pady=10)
 
         self.root.mainloop()
 
@@ -73,9 +77,17 @@ class App:
             self.file_label.configure(text='No file chosen', text_color='white')
             self.export_button.configure(state='disabled')
 
-    def print_file_type(self):
-        file = self.file_type.get()
-        print(file)
+    def process_file(self=None):
+        self.data.aggregate()
+        self.save_button.configure(state='normal')
+        print('Aggregated')
+        # todo: display how many rows where concatenated + progressbar
+
+    def save_file(self=None):
+        filename = filedialog.asksaveasfilename(defaultextension='.csv', filetypes=[('csv', '*.csv')],
+                                                initialfile='bitwarden_export')
+        print('Exporting:', filename)
+        self.data.output_df.to_csv(filename, index=False)
 
 
 def main():
