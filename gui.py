@@ -87,7 +87,8 @@ class App:
         filename = filedialog.asksaveasfilename(defaultextension='.csv', filetypes=[('csv', '*.csv')],
                                                 initialfile='bitwarden_export')
         print('Exporting:', filename)
-        self.data.output_df.to_csv(filename, index=False)
+        if filename:
+            self.data.output_df.to_csv(filename, index=False)
 
 
 def main():
