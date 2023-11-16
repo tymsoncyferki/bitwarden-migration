@@ -61,6 +61,8 @@ class App:
 
     def get_type(self, file_type):
         self.file_button.configure(state='normal')
+        if self.data:
+            self.data = None
         self.type = file_type
         self.info_label.configure(text="")
 
