@@ -49,6 +49,8 @@ class App:
         # Export file
         self.export_button = ctk.CTkButton(self.root, text='Process File', state='disabled', command=self.process_file)
         self.export_button.pack(padx=10, pady=10)
+        self.info_label = ctk.CTkLabel(self.root, text="")
+        self.info_label.pack(padx=10, pady=10)
 
         # Save file
         self.save_button = ctk.CTkButton(self.root, text='Save', state='disabled', fg_color='transparent',
@@ -60,8 +62,10 @@ class App:
     def get_type(self, file_type):
         self.file_button.configure(state='normal')
         self.type = file_type
+        self.info_label.configure(text="")
 
     def handle_file(self=None):
+        self.info_label.configure(text="")
         filename = filedialog.askopenfilename()
         if filename:
             self.data = Data(filename, self.type)
@@ -80,8 +84,9 @@ class App:
     def process_file(self=None):
         self.data.aggregate()
         self.save_button.configure(state='normal')
+        self.info_label.configure(text=f'{self.data.rows_removed} redundant rows removed!')
         print('Aggregated')
-        # todo: display how many rows where concatenated + progressbar
+        # todo: progressbar
 
     def save_file(self=None):
         filename = filedialog.asksaveasfilename(defaultextension='.csv', filetypes=[('csv', '*.csv')],
