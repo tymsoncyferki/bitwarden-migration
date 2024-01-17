@@ -22,7 +22,7 @@ Planning to add more browser formats
 
 After opening the app you can see the main (and only) menu:
 
-![Photo1](https://github.com/tymsoncyferki/bitwarden-migration/blob/master/readme_files/bit1.png)
+![Photo1](https://github.com/tymsoncyferki/bitwarden-migration/blob/main/readme_files/bit1.png)
 
 Usage:
 1. Choose import format e.g. Bitwarden or Chrome
@@ -31,4 +31,4 @@ Usage:
 4. Save the cleaned file to your local machine.
 5. The file is ready to be imported to Bitwarden!
 
-![Photo1](https://github.com/tymsoncyferki/bitwarden-migration/blob/master/readme_files/bit2.png)
+![Photo1](https://github.com/tymsoncyferki/bitwarden-migration/blob/main/readme_files/bit2.png)
